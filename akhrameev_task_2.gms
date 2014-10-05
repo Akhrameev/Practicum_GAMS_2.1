@@ -33,5 +33,5 @@ solve diffTask minimizing z using nlp;
 Parameter PLOT_1 data for plotter;
 PLOT_1("x",t,"y")=x.l(t);
 * .l (level) is used to get values (to make complilable)
-PLOT_1("x",t,"x")=ord(t);
+PLOT_1("x",t,"x")=ord(t)*h;
 $libinclude gnuplotxyz PLOT_1 x y
