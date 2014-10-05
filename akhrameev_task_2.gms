@@ -9,18 +9,29 @@ $offtext
 
 sets
 t /0 * 100/
-*полное множество, а также множества граничных условий
-t_first(t)
-t_last(t)
 
 variables
 x(t)
 z
 
 scalars
-h /0.08/;
-t_first = yes$(ord(t) eq 1);
-t_last = yes$(ord(t) eq card(t));
+h /0.08/
+a /0.2/
+default_level /1.0/
+x_0 /10.0/;
 
 equations
+J;
+J..      z =e= sum(t, sqr( x(t) - x(t-1) - h*( a*sqrt(x(t-1)) - sin(x(t-1)) ) ));
+x.l(t) = default_level;
+x.fx(t)$(ord(t) eq 1) = x_0;
 
+model diffTask /J/;
+
+solve diffTask minimizing z using nlp;
+
+Parameter PLOT_1 data for plotter;
+PLOT_1("x",t,"y")=x.l(t);
+* .l (level) is used to get values (to make complilable)
+PLOT_1("x",t,"x")=ord(t);
+$libinclude gnuplotxyz PLOT_1 x y
